@@ -102,49 +102,49 @@ may become:
 
 The model can now learn probabilities like:
 
-\[
+$
 P(shall \mid <s>, <s>)
-\]
+$
 
 and
 
-\[
+$
 P(</s> \mid thee, </s>)
-\]
+$
 
-A sentence with length \(\ell\), padded with \(n-1\) start tokens and \(n-1\) end tokens, produces \(\ell+n-1\) N-grams. This follows because the padded sequence has length \(\ell+2(n-1)\), and a length-\(L\) sequence contains \(L-n+1\) N-grams:
+A sentence with length $\ell$, padded with $n-1$ start tokens and $n-1$ end tokens, produces $\ell+n-1$ N-grams. This follows because the padded sequence has length $\ell+2(n-1)$, and a length-$L$ sequence contains $L-n+1$ N-grams:
 
-\[
+$$
 (\ell+2(n-1))-n+1 = \ell+n-1
-\]
+$$
 
 ## 2.4 N-Gram Models
 
-An N-gram model approximates a full sequence probability by limiting context to the previous \(n-1\) tokens.
+An N-gram model approximates a full sequence probability by limiting context to the previous $n-1$ tokens.
 
 The exact chain rule is:
 
-\[
+$$
 P(w_1,w_2,\ldots,w_T)=\prod_{t=1}^{T}P(w_t \mid w_1,\ldots,w_{t-1})
-\]
+$$
 
 This is usually impossible to estimate directly because each full history may appear rarely or never. The N-gram approximation is:
 
-\[
+$$
 P(w_t \mid w_1,\ldots,w_{t-1}) \approx P(w_t \mid w_{t-n+1},\ldots,w_{t-1})
-\]
+$$
 
 So a bigram model uses one previous token:
 
-\[
+$$
 P(w_t \mid w_{t-1})
-\]
+$$
 
 A trigram model uses two previous tokens:
 
-\[
+$$
 P(w_t \mid w_{t-2},w_{t-1})
-\]
+$$
 
 ## 2.5 The Denominator Rule
 
@@ -152,15 +152,15 @@ The probability of a predicted token is always counted relative to its context.
 
 For a bigram:
 
-\[
+$$
 P(w_i \mid w_{i-1}) = \frac{count(w_{i-1},w_i)}{count(w_{i-1})}
-\]
+$$
 
 For a trigram:
 
-\[
+$$
 P(w_i \mid w_{i-2},w_{i-1}) = \frac{count(w_{i-2},w_{i-1},w_i)}{count(w_{i-2},w_{i-1})}
-\]
+$$
 
 The denominator is not the count of the predicted word. It is the count of the context.
 
@@ -172,9 +172,9 @@ The course uses `nltk.lm.MLE`, where MLE means **maximum likelihood estimation**
 
 If the context `I love` appears 10 times and is followed by `thee` 4 times, the MLE estimate is:
 
-\[
+$$
 P(thee \mid I,love)=\frac{4}{10}=0.4
-\]
+$$
 
 MLE is simple and intuitive, but it has a major problem: unseen events get probability zero.
 
@@ -196,9 +196,9 @@ A Markov chain models a sequence of observable states where the probability of t
 
 The first-order Markov property is:
 
-\[
+$$
 P(X_t \mid X_{t-1},X_{t-2},\ldots,X_1)=P(X_t \mid X_{t-1})
-\]
+$$
 
 This assumption reduces complexity. Instead of needing to estimate probabilities for every possible full history, we only estimate transitions from one state to the next.
 
@@ -215,17 +215,17 @@ Example:
 
 Each row sums to 1 because the next state must be one of the possible states.
 
-If the current probability distribution over states is a row vector \(\pi_t\), the next distribution is:
+If the current probability distribution over states is a row vector $\pi_t$, the next distribution is:
 
-\[
+$$
 \pi_{t+1}=\pi_tP
-\]
+$$
 
-After \(k\) steps:
+After $k$ steps:
 
-\[
+$$
 \pi_{t+k}=\pi_tP^k
-\]
+$$
 
 ## 3.3 Bigram Models as Markov Chains
 
@@ -233,9 +233,9 @@ A bigram language model is essentially a first-order Markov chain over tokens. E
 
 For example:
 
-\[
+$$
 P(love \mid I)
-\]
+$$
 
 is the transition probability from state `I` to state `love`.
 
@@ -274,23 +274,23 @@ An HMM has five conceptual components:
 
 | Component | Symbol | Meaning |
 |---|---:|---|
-| Hidden states | \(S\) | possible latent states, such as POS tags |
-| Observations | \(O\) | visible tokens, such as words |
-| Initial probabilities | \(\pi\) | probability of starting in each hidden state |
-| Transition probabilities | \(A\) | probability of moving from one hidden state to another |
-| Emission probabilities | \(B\) | probability of observing a token from a hidden state |
+| Hidden states | $S$ | possible latent states, such as POS tags |
+| Observations | $O$ | visible tokens, such as words |
+| Initial probabilities | $\pi$ | probability of starting in each hidden state |
+| Transition probabilities | $A$ | probability of moving from one hidden state to another |
+| Emission probabilities | $B$ | probability of observing a token from a hidden state |
 
 The transition probability is:
 
-\[
+$$
 P(s_t \mid s_{t-1})
-\]
+$$
 
 The emission probability is:
 
-\[
+$$
 P(o_t \mid s_t)
-\]
+$$
 
 ## 4.3 Two Independence Assumptions
 
@@ -298,15 +298,15 @@ The HMM has two major assumptions.
 
 First, the hidden state sequence is Markov:
 
-\[
+$$
 P(s_t \mid s_{t-1},s_{t-2},\ldots)=P(s_t \mid s_{t-1})
-\]
+$$
 
 Second, the observation depends only on the current hidden state:
 
-\[
+$$
 P(o_t \mid s_t,s_{t-1},o_{t-1},\ldots)=P(o_t \mid s_t)
-\]
+$$
 
 These assumptions make the model tractable.
 
@@ -353,9 +353,9 @@ In the assignment, training is supervised because the POS tags are provided. Tha
 
 A time series is a set of observations ordered by time:
 
-\[
+$$
 y_1,y_2,\ldots,y_T
-\]
+$$
 
 Unlike ordinary tabular data, observations are usually dependent. Today's value may depend on yesterday's value, last week's value, or last year's value.
 
@@ -400,9 +400,9 @@ In the COVID assignment, cumulative cases were transformed into daily new cases,
 
 A polynomial trend fit approximates the long-term curve:
 
-\[
+$$
 \hat{y}_t = \beta_0 + \beta_1t + \beta_2t^2 + \cdots + \beta_dt^d
-\]
+$$
 
 Higher-degree polynomials are more flexible but can overfit.
 
@@ -416,15 +416,15 @@ Seasonal decomposition separates a series into components.
 
 Additive decomposition:
 
-\[
+$$
 y_t = T_t + S_t + R_t
-\]
+$$
 
 Multiplicative decomposition:
 
-\[
+$$
 y_t = T_t \times S_t \times R_t
-\]
+$$
 
 Use additive decomposition when seasonal variation has roughly constant magnitude. Use multiplicative decomposition when seasonal variation grows with the level of the series.
 
@@ -466,9 +466,9 @@ The tradeoff is responsiveness versus smoothness. A smoother curve is easier to 
 
 A simple moving average of window size \(k\) is:
 
-\[
+$$
 MA_t = \frac{1}{k}\sum_{i=0}^{k-1}y_{t-i}
-\]
+$$
 
 Each observation in the window gets equal weight.
 
@@ -478,15 +478,15 @@ A larger window gives more smoothing but more lag. A smaller window gives less s
 
 A weighted moving average assigns different weights within the window:
 
-\[
+$$
 WMA_t = \sum_{i=0}^{k-1}w_iy_{t-i}
-\]
+$$
 
 where the weights usually sum to 1:
 
-\[
+$$
 \sum_{i=0}^{k-1}w_i=1
-\]
+$$
 
 The assignment's weighted moving average requires careful alignment: the weights must correspond to the values in each rolling window in the expected order.
 
@@ -494,11 +494,11 @@ The assignment's weighted moving average requires careful alignment: the weights
 
 The exponential moving average recursively combines the current value with the previous EMA:
 
-\[
+$$
 EMA_t = \alpha y_t + (1-\alpha)EMA_{t-1}
-\]
+$$
 
-The parameter \(\alpha\) controls responsiveness.
+The parameter $\alpha$ controls responsiveness.
 
 | Alpha | Behavior |
 |---:|---|
@@ -519,9 +519,9 @@ Two time series can be similar in shape but misaligned in time. For example, two
 
 Euclidean distance compares aligned values directly:
 
-\[
+$$
 d(x,y)=\sqrt{\sum_{t=1}^{T}(x_t-y_t)^2}
-\]
+$$
 
 It works best when:
 
@@ -535,15 +535,15 @@ It is sensitive to scale and temporal shifts.
 
 Cosine similarity compares the angle between two vectors:
 
-\[
+$$
 cos(x,y)=\frac{x\cdot y}{\|x\|\|y\|}
-\]
+$$
 
 It is often interpreted as shape or direction similarity rather than magnitude similarity. Two series can have high cosine similarity even if one has larger absolute values, as long as their patterns move in similar proportions.
 
 ## 8.4 Dynamic Time Warping
 
-Dynamic Time Warping, or DTW, allows flexible alignment. Instead of forcing \(x_t\) to match \(y_t\), DTW finds a low-cost path through an alignment matrix.
+Dynamic Time Warping, or DTW, allows flexible alignment. Instead of forcing $x_t$ to match $y_t$, DTW finds a low-cost path through an alignment matrix.
 
 At each matrix cell, DTW considers three possible previous moves:
 
@@ -553,9 +553,9 @@ At each matrix cell, DTW considers three possible previous moves:
 
 The recurrence is commonly:
 
-\[
+$$
 D(i,j)=cost(x_i,y_j)+\min\{D(i-1,j),D(i,j-1),D(i-1,j-1)\}
-\]
+$$
 
 DTW is useful when two series have similar shapes but the timing differs.
 
@@ -613,17 +613,17 @@ A non-stationary series may have:
 
 First-order differencing transforms levels into changes:
 
-\[
+$$
 \Delta y_t = y_t-y_{t-1}
-\]
+$$
 
 This can remove trend and make the series more stationary.
 
 Seasonal differencing uses a seasonal lag \(s\):
 
-\[
+$$
 \Delta_s y_t = y_t-y_{t-s}
-\]
+$$
 
 In the forecasting assignments, first-order differences are used before ARMA/VAR modeling, and forecasts are converted back to the original data space by cumulative summation from the last observed value.
 
@@ -631,9 +631,9 @@ In the forecasting assignments, first-order differences are used before ARMA/VAR
 
 A log return is:
 
-\[
+$$
 r_t=\log(y_t)-\log(y_{t-1})
-\]
+$$
 
 Log returns approximate percentage changes and can stabilize variance when values grow multiplicatively.
 
@@ -641,7 +641,7 @@ Log returns approximate percentage changes and can stabilize variance when value
 
 A series is predictable when past values contain information about future values. Autocorrelation is a key measure.
 
-Lag-\(k\) autocorrelation compares \(y_t\) with \(y_{t-k}\). High autocorrelation means past values may help predict future values.
+Lag-$k$ autocorrelation compares $y_t$ with $y_{t-k}$. High autocorrelation means past values may help predict future values.
 
 **Oral-exam explanation:** Stationarity means the series has stable statistical behavior over time. Differencing and log returns are transformations that often make a series easier to model. Predictability is related to whether past observations contain information about future observations, often measured through autocorrelation.
 
@@ -651,15 +651,15 @@ Lag-\(k\) autocorrelation compares \(y_t\) with \(y_{t-k}\). High autocorrelatio
 
 The ACF measures correlation between a series and its lagged values:
 
-\[
+$$
 Corr(y_t,y_{t-k})
-\]
+$$
 
 If the ACF decays slowly, the series may be non-stationary or strongly persistent. If it has spikes at seasonal lags, the series may have seasonality.
 
 ## 11.2 Partial Autocorrelation Function
 
-The PACF measures the direct relationship between \(y_t\) and \(y_{t-k}\) after controlling for intermediate lags.
+The PACF measures the direct relationship between $y_t$ and $y_{t-k}$ after controlling for intermediate lags.
 
 Conceptually:
 
@@ -688,19 +688,19 @@ These are heuristics, not guarantees.
 
 An AR(p) model predicts the current value from previous values:
 
-\[
+$$
 y_t = c + \phi_1y_{t-1}+\phi_2y_{t-2}+\cdots+\phi_py_{t-p}+\epsilon_t
-\]
+$$
 
-The parameter \(p\) is the number of lagged values used.
+The parameter $p$ is the number of lagged values used.
 
 ## 12.2 Moving-Average Error Models
 
 An MA(q) model predicts the current value from past forecast errors:
 
-\[
+$$
 y_t = c + \epsilon_t + \theta_1\epsilon_{t-1}+\cdots+\theta_q\epsilon_{t-q}
-\]
+$$
 
 This is different from a moving average smoother. In ARIMA terminology, MA refers to modeling error dependence, not simply rolling averages.
 
@@ -708,9 +708,9 @@ This is different from a moving average smoother. In ARIMA terminology, MA refer
 
 ARMA combines autoregressive terms and moving-average error terms:
 
-\[
+$$
 y_t = c + \sum_{i=1}^{p}\phi_iy_{t-i}+\epsilon_t+\sum_{j=1}^{q}\theta_j\epsilon_{t-j}
-\]
+$$
 
 ARMA assumes the modeled series is stationary.
 
@@ -718,9 +718,9 @@ ARMA assumes the modeled series is stationary.
 
 ARIMA adds differencing:
 
-\[
+$$
 ARIMA(p,d,q)
-\]
+$$
 
 | Parameter | Meaning |
 |---|---|
@@ -734,9 +734,9 @@ In the assignments, the code often fits `ARIMA(..., order=(p, 0, q))` to an alre
 
 If you model first differences, the model forecasts future changes. To recover forecasted levels:
 
-\[
+$$
 \hat{y}_{T+h}=y_T+\sum_{i=1}^{h}\widehat{\Delta y}_{T+i}
-\]
+$$
 
 This is why the assignment uses cumulative sums of forecasted differences added to the last observed value.
 
@@ -754,13 +754,13 @@ For five countries' COVID case series, a VAR model can ask whether past case cha
 
 For two variables, a VAR(1) might look like:
 
-\[
+$$
 y_t = a_1 + b_{11}y_{t-1}+b_{12}x_{t-1}+e_{1t}
-\]
+$$
 
-\[
+$$
 x_t = a_2 + b_{21}y_{t-1}+b_{22}x_{t-1}+e_{2t}
-\]
+$$
 
 Each variable gets its own equation, and each equation can use lagged values of all variables.
 
@@ -792,19 +792,19 @@ The conceptual steps are:
 
 Granger causality is based on predictive improvement.
 
-Variable \(X\) Granger-causes variable \(Y\) if past values of \(X\) improve prediction of \(Y\) beyond what past values of \(Y\) already provide.
+Variable $X$ Granger-causes variable $Y$ if past values of $X$ improve prediction of $Y$ beyond what past values of $Y$ already provide.
 
 The null hypothesis is usually:
 
-\[
+$$
 X \text{ does not Granger-cause } Y
-\]
+$$
 
-A small p-value suggests rejecting the null, meaning the lagged values of \(X\) add predictive information for \(Y\).
+A small p-value suggests rejecting the null, meaning the lagged values of $X$ add predictive information for $Y$.
 
 ## 14.2 Direction Matters
 
-Granger causality is directional. \(X\) may Granger-cause \(Y\), while \(Y\) may not Granger-cause \(X\).
+Granger causality is directional. $X$ may Granger-cause $Y$, while $Y$ may not Granger-cause $X$.
 
 That is why the assignment's Granger p-value matrix is not necessarily symmetric.
 
@@ -869,25 +869,25 @@ The assignments use stream simulation with tweets and emoji extraction. The key 
 
 ## 16.1 Random Sampling
 
-Simple random sampling in a stream can include each item independently with some probability \(p\). This is easy but the final sample size is random.
+Simple random sampling in a stream can include each item independently with some probability $p$. This is easy but the final sample size is random.
 
 In the Twitter emoji assignment, the sample is not just a list of tweets; it also supports approximate counts of emojis in the sampled tweets. That means adding or removing a tweet requires updating the emoji count dictionary.
 
 ## 16.2 Reservoir Sampling
 
-Reservoir sampling maintains a fixed-size sample of \(k\) items from a stream of unknown length.
+Reservoir sampling maintains a fixed-size sample of $k$ items from a stream of unknown length.
 
 The algorithm:
 
-1. Store the first \(k\) items.
-2. For item \(i\) after the reservoir is full, include it with probability \(k/i\).
+1. Store the first $k$ items.
+2. For item $i$ after the reservoir is full, include it with probability $k/i$.
 3. If included, replace a randomly chosen item in the reservoir.
 
-After seeing \(n\) items, every item has probability:
+After seeing $n$ items, every item has probability:
 
-\[
+$$
 \frac{k}{n}
-\]
+$$
 
 of being in the reservoir.
 
@@ -1081,7 +1081,7 @@ Streams may be too large or fast to store, and they may only be available in one
 # 21. Concept Self-Test Questions
 
 1. Why does an N-gram model need padding tokens?
-2. In a trigram model, what is the denominator for \(P(w_3 \mid w_1,w_2)\)?
+2. In a trigram model, what is the denominator for $P(w_3 \mid w_1,w_2)$?
 3. Why is a bigram model a first-order Markov chain?
 4. What is hidden in an HMM POS tagger?
 5. What is the difference between transition and emission probabilities?
